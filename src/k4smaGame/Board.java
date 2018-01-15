@@ -28,6 +28,7 @@ public class Board extends JPanel implements ActionListener
 	
 	PipeController pp;
 	public static JLabel scoreLabel;
+	public static JLabel restartLabel;
 	public static int score = 0;
 	
 	public Board()
@@ -44,10 +45,18 @@ public class Board extends JPanel implements ActionListener
 		scoreLabel.setForeground(new Color(0, 153, 153));
 		scoreLabel.setSize(300, 300);
 		scoreLabel.setLocation(0, 0);
+		add(scoreLabel);
+		
+		restartLabel = new JLabel("Press Space to restart!", SwingConstants.CENTER);
+		restartLabel.setFont(new Font("Open Sans", 1, 40));
+		restartLabel.setForeground(new Color(0, 153, 153));
+		restartLabel.setSize(600, 100);
+		restartLabel.setLocation(getToolkit().getScreenSize().width / 2 - 300, getToolkit().getScreenSize().height / 2 - 50);
+		restartLabel.setVisible(false);
+		add(restartLabel);
 		
 		addKeyListener(new TAdapter());
 		setFocusable(true);
-		add(scoreLabel);
 		
 		start();
 		
@@ -116,6 +125,7 @@ public class Board extends JPanel implements ActionListener
 	public void endGame()
 	{
 		running = false;
+		restartLabel.setVisible(true);
 	}
 	
 	public void restartGame()
@@ -125,6 +135,7 @@ public class Board extends JPanel implements ActionListener
 		running = true;
 		score = 0;
 		updateScore();
+		restartLabel.setVisible(false);
 	}
 	
 	public static void updateScore()
