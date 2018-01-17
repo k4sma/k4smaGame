@@ -1,7 +1,11 @@
 package k4smaGame;
 
+//the pipes that spawn on the right side of the screen
+//calculate every frame if they collide with player
+
 public class Pipe extends GameObject
 {
+	//velocity and collider
 	private Vector3 vel = new Vector3();
 	private Vector3 col = new Vector3();
 
@@ -27,7 +31,6 @@ public class Pipe extends GameObject
 			if(player.pos.y + player.col.y >= pos.y && player.pos.y <= pos.y + col.y)
 			{
 				Application.brd.endGame();
-				//GameObject.objects.remove(player);
 			}
 		}
 	}

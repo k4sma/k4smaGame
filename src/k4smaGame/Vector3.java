@@ -1,5 +1,6 @@
 package k4smaGame;
 
+//a simple class to store a 3-dimensional vector
 
 public class Vector3
 {
@@ -36,6 +37,7 @@ public class Vector3
 		this.y += yy;
 	}
 	
+	//returns the unit-vector of the given vector like
 	public Vector3 unit()
 	{
 		float sq = (float) Math.sqrt((this.x * this.x) + (this.y * this.y));

@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+//this class is the window
+//the board class is the JPanel in the window -> everythings rendered on that
+
 public class Application extends JFrame
 {
 	private static final long serialVersionUID = 1L;
@@ -14,6 +17,7 @@ public class Application extends JFrame
 		initUI();
 	}
 	
+	//initialize the UI
 	private void initUI()
 	{
 		brd = new Board();
@@ -27,6 +31,7 @@ public class Application extends JFrame
 		setLocationRelativeTo(null);
 	}
 	
+	//creates itself to create a window
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()

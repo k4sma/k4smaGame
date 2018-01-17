@@ -1,5 +1,7 @@
 package k4smaGame;
 
+//this invisible GameObject is spawned in the gap between 2 pipes and is used for scoring
+
 public class ScorePoint extends GameObject
 {
 	private Vector3 vel = new Vector3();

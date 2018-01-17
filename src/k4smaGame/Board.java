@@ -19,16 +19,26 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener
 {
+	//period between 2 images that are rendered in ms
 	private final int DELAY = 17;
+	//the font im using (monospace)
+	private final String FONT = "Monospaced";
 	
 	private static final long serialVersionUID = 1L;
+	//the timer object calls actionPerformed() every DELAY milliseconds
 	private static Timer timer;
+	//boolean that decides wether or not the GameObjects are updated
 	private static boolean running = true;
-	private static boolean restart = false;
 	
+	//controls the pipes and deletes them after use
 	PipeController pp;
+	//shows the score to the player
 	public static JLabel scoreLabel;
+	//indicates what to do when the player died
 	public static JLabel restartLabel;
+	//indicates what to do when game is started (replaces a start menu)
+	public static JLabel startLabel;
+	//the variable to keep track of the score
 	public static int score = 0;
 	
 	public Board()
@@ -36,24 +46,34 @@ public class Board extends JPanel implements ActionListener
 		initBoard();
 	}
 	
+	//creates all the labels and the timer object
+	//also connects the key listener for keyboard input
 	private void initBoard()
 	{
 		setLayout(null);
 		
 		scoreLabel = new JLabel("0", SwingConstants.CENTER);
-		scoreLabel.setFont(new Font("Open Sans", 1, 70));
+		scoreLabel.setFont(new Font(FONT, 1, 70));
 		scoreLabel.setForeground(new Color(0, 153, 153));
 		scoreLabel.setSize(300, 300);
 		scoreLabel.setLocation(0, 0);
 		add(scoreLabel);
 		
 		restartLabel = new JLabel("Press Space to restart!", SwingConstants.CENTER);
-		restartLabel.setFont(new Font("Open Sans", 1, 40));
+		restartLabel.setFont(new Font(FONT, 1, 40));
 		restartLabel.setForeground(new Color(0, 153, 153));
-		restartLabel.setSize(600, 100);
-		restartLabel.setLocation(getToolkit().getScreenSize().width / 2 - 300, getToolkit().getScreenSize().height / 2 - 50);
+		restartLabel.setSize(700, 100);
+		restartLabel.setLocation(getToolkit().getScreenSize().width / 2 - 350, getToolkit().getScreenSize().height / 2 - 50);
 		restartLabel.setVisible(false);
 		add(restartLabel);
+		
+		startLabel = new JLabel("Press Space to start the game!", SwingConstants.CENTER);
+		startLabel.setFont(new Font(FONT, 1, 40));
+		startLabel.setForeground(new Color(0, 153, 153));
+		startLabel.setSize(800, 100);
+		startLabel.setLocation(getToolkit().getScreenSize().width / 2 - 400, getToolkit().getScreenSize().height / 2 - 50);
+		startLabel.setVisible(true);
+		add(startLabel);
 		
 		addKeyListener(new TAdapter());
 		setFocusable(true);
@@ -64,19 +84,16 @@ public class Board extends JPanel implements ActionListener
 		timer.start();
 	}
 	
+	//the entry point, where GameObjects (or generally assets) are created
 	private void start()
 	{
-		PipeController.player = new Player(new Vector3(150, 400, 5), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\player.png");
-		new BackgroundPart(new Vector3(4), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 0.png", 12);
-		new BackgroundPart(new Vector3(3), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 1.png", 6);
-		new BackgroundPart(new Vector3(2), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 2.png", 3);
-		new BackgroundPart(new Vector3(1), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 3.png", 2);
-		new BackgroundPart(new Vector3(0), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 4.png", 1);
-		System.out.println("helo");
+		loadGameAssets();
 		
-		pp = new PipeController();
+		//set running to false, cause player has to press space to start the game
+		running = false;
 	}
 	
+	//used for the rendering process
 	@Override
 	public void paintComponent(Graphics g)
 	{
@@ -85,6 +102,8 @@ public class Board extends JPanel implements ActionListener
 		Toolkit.getDefaultToolkit().sync();
 	}
 	
+	//draws every GameObjects image to the screen at the GameObjects position
+	//sorts them by their Z position (rendering order)
 	private void doDrawing(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
@@ -103,7 +122,9 @@ public class Board extends JPanel implements ActionListener
 			}
 		}
 	}
-
+	
+	//calls the "update" method of every GameObject while running
+	//otherwise restarts if space is pressed
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
@@ -113,6 +134,7 @@ public class Board extends JPanel implements ActionListener
 			{
 				GameObject.objects.get(i).update();
 			}
+			//updates the PipeController which is not a GameObject
 			pp.update();
 			
 			repaint();
@@ -122,10 +144,24 @@ public class Board extends JPanel implements ActionListener
 		}
 	}
 	
+	//when the player hits a pipe, the player has to press space to restart
 	public void endGame()
 	{
 		running = false;
 		restartLabel.setVisible(true);
+	}
+	
+	//loads the needed GameObjects to the JPanel
+	private void loadGameAssets()
+	{
+		PipeController.player = new Player(new Vector3(150, 400, 5), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\player2.png");
+		new BackgroundPart(new Vector3(4), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 0.png", 12);
+		new BackgroundPart(new Vector3(3), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 1.png", 6);
+		new BackgroundPart(new Vector3(2), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 2.png", 3);
+		new BackgroundPart(new Vector3(1), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 3.png", 2);
+		new BackgroundPart(new Vector3(0), "D:\\EclipseWorkspace\\k4smaGame\\src\\pics\\bg_Layer 4.png", 1);
+		
+		pp = new PipeController();
 	}
 	
 	public void restartGame()
@@ -136,6 +172,7 @@ public class Board extends JPanel implements ActionListener
 		score = 0;
 		updateScore();
 		restartLabel.setVisible(false);
+		startLabel.setVisible(false);
 	}
 	
 	public static void updateScore()
@@ -143,6 +180,7 @@ public class Board extends JPanel implements ActionListener
 		scoreLabel.setText(Integer.toString(score));
 	}
 	
+	//binds the keyboard input to my custom Input class
 	private class TAdapter extends KeyAdapter
 	{
 		@Override

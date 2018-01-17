@@ -1,5 +1,9 @@
 package k4smaGame;
 
+//to animate the background
+//every row of mountains you see is one object
+//there is no gap because they spawn themselves over and over again
+
 public class BackgroundPart extends GameObject
 {
 	private Vector3 vel = new Vector3();	

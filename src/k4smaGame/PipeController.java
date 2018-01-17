@@ -1,12 +1,17 @@
 package k4smaGame;
 
+//this class simply controlls the spawning process of pipes (where, how fast, ...)
+
 public class PipeController
 {
 	public static Player player;
 	
 	private long time;
-	private long delay = 1000l;
+	//how often
+	private long delay = 1500l;
+	//for the gap in between 2 pipes
 	private int gap = 60;
+	//the horizontal speed of the pipes
 	private int level = 12;
 	
 	public PipeController()
@@ -33,6 +38,7 @@ public class PipeController
 		//System.out.println(player.pos.y);
 	}
 	
+	//spawns 2 pipes
 	private void spawnPipes()
 	{
 		int rand = (int) (Math.random() * 600) + 50;
